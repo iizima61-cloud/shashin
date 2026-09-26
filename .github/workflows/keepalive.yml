@@ -1,0 +1,14 @@
+# Supabaseの無料プロジェクトが「7日間使われないと停止」するのを防ぐため、3日ごとに軽くアクセスする
+name: keepalive
+on:
+  schedule:
+    - cron: "0 0 */3 * *"
+  workflow_dispatch:
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: ping supabase
+        run: |
+          curl -s -o /dev/null -w "%{http_code}\n" "https://wglvspoifylzsnzzlrme.supabase.co/rest/v1/shindan_usage?select=day&limit=1" \
+            -H "apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndnbHZzcG9pZnlsenNuenpscm1lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY1MTEzMzYsImV4cCI6MjEwMjA4NzMzNn0.28t8CB5po53b1QzlPPsDFN5NSWdh6SwEkWDpikWF4CE"
