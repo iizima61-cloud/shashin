@@ -274,9 +274,16 @@ function renderSlots(){
   slotsEl.querySelectorAll("input[type=file]").forEach(inp=>{
     inp.addEventListener("change", e=>{
       const f = e.target.files && e.target.files[0]; const i = +e.target.dataset.i;
-      if(!f) return;
-      files[i] = {file:f, url:URL.createObjectURL(f)};
-      renderSlots(); updateGo();
+      if(f) addPhoto(i, f);
+    });
+  });
+  // パソコン用：写真を枠にドラッグしても入れられる
+  slotsEl.querySelectorAll(".slot").forEach((el,i)=>{
+    el.addEventListener("dragover", e=>{ e.preventDefault(); });
+    el.addEventListener("drop", e=>{
+      e.preventDefault();
+      const f = e.dataTransfer.files && e.dataTransfer.files[0];
+      if(f) addPhoto(i, f);
     });
   });
   slotsEl.querySelectorAll(".rm").forEach(b=>{
@@ -286,6 +293,33 @@ function renderSlots(){
       files[i] = null; renderSlots(); updateGo();
     });
   });
+}
+// iPhoneの写真（HEIC形式）はパソコンのブラウザで開けないため、JPEGに変換する
+function loadScript(src){
+  return new Promise((ok,ng)=>{ const t=document.createElement("script"); t.src=src; t.onload=ok; t.onerror=ng; document.head.appendChild(t); });
+}
+function canShow(url){
+  return new Promise(ok=>{ const im=new Image(); im.onload=()=>ok(true); im.onerror=()=>ok(false); im.src=url; });
+}
+async function addPhoto(i, f){
+  statusEl.textContent = "写真を読み込んでいます…";
+  try{
+    let file = f;
+    const isHeic = /heic|heif/i.test(f.type) || /\.(heic|heif)$/i.test(f.name||"");
+    if(isHeic){
+      if(!window.heic2any) await loadScript("https://cdnjs.cloudflare.com/ajax/libs/heic2any/0.0.4/heic2any.min.js");
+      const out = await window.heic2any({blob:f, toType:"image/jpeg", quality:0.85});
+      file = new File([Array.isArray(out)?out[0]:out], (f.name||"photo").replace(/\.\w+$/,"")+".jpg", {type:"image/jpeg"});
+    }
+    const url = URL.createObjectURL(file);
+    if(!(await canShow(url))){ URL.revokeObjectURL(url); throw new Error("decode"); }
+    if(files[i]) URL.revokeObjectURL(files[i].url);
+    files[i] = {file, url};
+    statusEl.textContent = "";
+    renderSlots(); updateGo();
+  }catch(_){
+    statusEl.innerHTML = '<span class="err">この写真は読み込めませんでした。JPEG（.jpg）やPNGの写真でお試しください。</span>';
+  }
 }
 function updateGo(){ goBtn.disabled = !files.some(Boolean); }
 function answer(name){ const c = document.querySelector(`input[name=${name}]:checked`); return c ? c.value : "未回答"; }
