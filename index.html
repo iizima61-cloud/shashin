@@ -412,17 +412,21 @@ function showResult(data){
     <ul><li>外壁内部の水分・腐食</li><li>防水層内部の状態</li><li>雨漏りの原因</li><li>シーリング内部の劣化</li><li>塗膜の密着状態</li><li>下地の傷み</li></ul>
     <p>必要に応じて、現地での確認が必要です。</p></div>`;
 
+  const shareBox = `<div class="share"><p class="small" style="margin-top:14px"><b>診断した写真と結果を、そのままLINEで送れます</b></p>
+      <a class="btn tel" href="${LINE_URL}" target="_blank" rel="noopener">① 飯島防水を友だち追加する（初めての方）</a>
+      <button type="button" class="btn line" id="shareBtn" style="width:100%;border:0;cursor:pointer;font-family:inherit">② 写真と結果をLINEで送る</button>
+      <p class="small" id="shareNote">②を押して送り先に「LINE」→「飯島防水」を選ぶと、写真と診断結果が届きます。</p></div>`;
   const reply = `<p class="small">職人歴30年以上の代表が直接確認します。現場作業中は返信が遅れる場合がありますが、通常、当日〜翌日中に返信します。</p>`;
   if(overall === 2){
     html += `<div class="exit"><h3>写真を送って専門家に相談できます</h3>
       <p>この写真をLINEで送っていただければ、職人歴30年以上の代表が直接確認します。相談だけでも大丈夫です。</p>
-      <a class="btn line" href="${LINE_URL}" target="_blank" rel="noopener">写真を送って専門家に相談する（LINE）</a>${reply}</div>`;
+      ${shareBox}${reply}</div>`;
   }else if(overall === 3){
     html += `<div class="exit"><h3>無料点検を承っています</h3>
       <p>点検だけでもOK。その場で契約を迫ることはありません。</p>
       <a class="btn main" href="${LINE_URL}" target="_blank" rel="noopener">無料点検を依頼する（LINE）</a>
       <a class="btn tel" href="tel:${TEL.replace(/-/g,"")}">電話で依頼する ${TEL}</a>
-      <p class="small">まずは写真を見てほしい、という相談もLINEで受け付けています。</p>${reply}</div>`;
+      <p class="small">まずは写真を見てほしい、という相談もLINEで受け付けています。</p>${shareBox}${reply}</div>`;
   }else{
     html += `<div class="calm"><p>今のところ、急いで何かをする必要はありません。季節の変わり目や大雨の後など、気になった時にまたチェックしてみてください。</p></div>`;
   }
@@ -432,6 +436,30 @@ function showResult(data){
 
   res.innerHTML = html;
   res.style.display = "block"; res.classList.add("show");
+  const sb = document.getElementById("shareBtn");
+  if(sb){
+    const lines = ["【写真でわかる外壁・防水診断の結果】", "全体：" + LEVEL_NAME[overall]];
+    findings.forEach(f=>{
+      const it = ITEMS[f.item]; const ty = it.types ? it.types[f.type] : null;
+      lines.push("・" + (ty ? "防水層：" + ty.label : it.name) + "：" + LEVEL_NAME[f.level] + (f.reasons.length ? "（" + f.reasons.join("／") + "）" : ""));
+    });
+    lines.push("この写真について相談したいです。");
+    const msg = lines.join("\n");
+    sb.addEventListener("click", async ()=>{
+      const shareFiles = files.filter(Boolean).map(f=>f.file);
+      const note = document.getElementById("shareNote");
+      try{
+        if(navigator.canShare && navigator.canShare({files: shareFiles})){
+          await navigator.share({files: shareFiles, text: msg});
+          return;
+        }
+      }catch(e){ if(e && e.name === "AbortError") return; }
+      // 写真ごと共有できない環境（主にパソコン）：結果の文章をコピーしてLINEを開く
+      try{ await navigator.clipboard.writeText(msg); }catch(_){}
+      note.textContent = "この端末では写真をまとめて送れないため、診断結果の文章をコピーしました。開いたLINEのトークに貼り付け、写真は「＋」から添付してください。";
+      window.open(LINE_URL, "_blank");
+    });
+  }
   document.getElementById("form").style.display = "none";
   window.scrollTo({top:0, behavior:"smooth"});
   document.getElementById("again").addEventListener("click", ()=>{
