@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>写真でわかる外壁・防水診断｜飯島防水株式会社（長野市）</title>
 <meta name="description" content="外壁・屋根からベランダ・屋上の防水まで。気になる所をスマホで撮るだけで、防水専門店の目線で劣化の目安がわかる無料の写真診断です。連絡先の入力なし・営業電話なし。">
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-18391141487"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','AW-18391141487');</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -182,6 +184,7 @@ footer a{color:var(--brand)}
 
 <footer>
   <p>他社から見積もりを取った方は、金額や内容が適正かを確認できる<a href="https://iizima61-cloud.github.io/iizima/" target="_blank" rel="noopener">見積もり適正診断</a>もご利用いただけます。</p>
+  <p style="font-size:12px">広告の効果測定のため、Googleのタグ（Cookie）を使用しています。写真や診断内容は送信しません。</p>
   <p>飯島防水株式会社｜長野県長野市篠ノ井塩崎3139-1｜<a href="https://iizimabousui.com/" target="_blank" rel="noopener">ホームページ</a></p>
 </footer>
 </div>
@@ -189,6 +192,16 @@ footer a{color:var(--brand)}
 <script>
 const LINE_URL = "https://line.me/R/ti/p/@489tvrhh";
 const TEL = "090-1883-5221";
+// 相談ボタン（LINE・無料点検・電話）が押された回数をGoogle広告の成果として数える（1回の訪問で1件まで）
+let consultTracked = false;
+function trackConsult(){
+  if(consultTracked) return; consultTracked = true;
+  try{ if(window.gtag) gtag('event','conversion',{send_to:'AW-18391141487/3zPyCIOl0vEcEO-YysFE', value:1.0, currency:'JPY'}); }catch(_){}
+}
+document.addEventListener("click", e=>{
+  const t = e.target.closest && e.target.closest("#result a.btn, #shareBtn");
+  if(t) trackConsult();
+}, true);
 
 const SLOT_LABELS = [
   {t:"建物の全体", s:"どの面か分かるように", req:true},
