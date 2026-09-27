@@ -135,6 +135,8 @@ footer a{color:var(--brand)}
   <ul class="promise">
     <li>無料</li><li>連絡先の入力なし</li><li>営業電話なし</li><li>写真は保存しません</li>
   </ul>
+  <p style="margin:12px 0 4px;font-size:14px;font-weight:700">チェックできる場所 <span style="font-weight:400;color:var(--sub)">（気になる場所だけでOK）</span></p>
+  <ul class="promise"><li>外壁</li><li>シーリング</li><li>屋根</li><li>ベランダ</li><li>屋上</li><li>防水</li></ul>
   <div class="company">飯島防水株式会社（長野市）</div>
 </header>
 
@@ -154,7 +156,8 @@ footer a{color:var(--brand)}
       <label><input type="radio" name="q1" value="10年未満"><span>10年未満</span></label>
       <label><input type="radio" name="q1" value="10〜15年"><span>10〜15年</span></label>
       <label><input type="radio" name="q1" value="15年以上"><span>15年以上</span></label>
-      <label><input type="radio" name="q1" value="わからない・塗ったことがない"><span>わからない・塗ったことがない</span></label>
+      <label><input type="radio" name="q1" value="塗ったことがない"><span>塗ったことがない</span></label>
+      <label><input type="radio" name="q1" value="わからない"><span>わからない</span></label>
     </div>
   </fieldset>
   <fieldset>
@@ -174,7 +177,7 @@ footer a{color:var(--brand)}
       <label><input type="radio" name="q3" value="わからない"><span>わからない</span></label>
     </div>
   </fieldset>
-  <button class="go" id="go" disabled>診断する</button>
+  <button class="go" id="go" disabled>🔍 写真をチェックして結果を見る</button>
   <p class="note">写真は判定のためだけに使い、当社では保存しません。</p>
   <div class="status" id="status" role="status" aria-live="polite"></div>
 </section>
@@ -184,7 +187,12 @@ footer a{color:var(--brand)}
 
 <footer>
   <p>他社から見積もりを取った方は、金額や内容が適正かを確認できる<a href="https://iizima61-cloud.github.io/iizima/" target="_blank" rel="noopener">見積もり適正診断</a>もご利用いただけます。</p>
-  <p style="font-size:12px">広告の効果測定のため、Googleのタグ（Cookie）を使用しています。写真や診断内容は送信しません。</p>
+  <details style="font-size:12px;margin:8px 0"><summary style="cursor:pointer">個人情報・写真の取り扱い</summary>
+  <p>・アップロードされた写真と質問への回答は、劣化の目安を判定するためだけにAI（Google）へ送信し、当社では保存しません。</p>
+  <p>・お名前・電話番号・住所などの入力は求めません。</p>
+  <p>・広告の効果測定のため、Googleのタグ（Cookie）を使用しています。写真や診断内容はこのタグでは送信しません。</p>
+  <p>・LINEでのご相談は、お客様ご自身の操作で送られた内容のみを受け取り、ご相談への対応にだけ使用します。</p>
+  <p>・お問い合わせ：飯島防水株式会社 090-1883-5221</p></details>
   <p>飯島防水株式会社｜長野県長野市篠ノ井塩崎3139-1｜<a href="https://iizimabousui.com/" target="_blank" rel="noopener">ホームページ</a></p>
 </footer>
 </div>
@@ -314,6 +322,9 @@ function loadScript(src){
 function canShow(url){
   return new Promise(ok=>{ const im=new Image(); im.onload=()=>ok(true); im.onerror=()=>ok(false); im.src=url; });
 }
+function isDark(url){
+  return new Promise(ok=>{ const im=new Image(); im.onload=()=>{ try{ const c=document.createElement("canvas"); c.width=32; c.height=32; const g=c.getContext("2d"); g.drawImage(im,0,0,32,32); const d=g.getImageData(0,0,32,32).data; let sum=0; for(let k=0;k<d.length;k+=4) sum+=0.299*d[k]+0.587*d[k+1]+0.114*d[k+2]; ok(sum/(d.length/4) < 60); }catch(_){ ok(false); } }; im.onerror=()=>ok(false); im.src=url; });
+}
 async function addPhoto(i, f){
   statusEl.textContent = "写真を読み込んでいます…";
   try{
@@ -326,16 +337,17 @@ async function addPhoto(i, f){
     }
     const url = URL.createObjectURL(file);
     if(!(await canShow(url))){ URL.revokeObjectURL(url); throw new Error("decode"); }
+    const dark = await isDark(url);
     if(files[i]) URL.revokeObjectURL(files[i].url);
     files[i] = {file, url};
-    statusEl.textContent = "";
+    statusEl.textContent = dark ? "写真が少し暗いようです。明るい場所でもう一度撮影すると、より確認しやすくなります（このままでも診断できます）。" : "";
     renderSlots(); updateGo();
   }catch(_){
     statusEl.innerHTML = '<span class="err">この写真は読み込めませんでした。JPEG（.jpg）やPNGの写真でお試しください。</span>';
   }
 }
 function updateGo(){ goBtn.disabled = !files.some(Boolean); }
-function answer(name){ const c = document.querySelector(`input[name=${name}]:checked`); return c ? c.value : "未回答"; }
+function answer(name){ const c = document.querySelector(`input[name=${name}]:checked`); let v = c ? c.value : "未回答"; if(name==="q1"){ if(v==="塗ったことがない") v="わからない・塗ったことがない"; else if(v==="わからない") v="未回答"; } return v; }
 
 renderSlots();
 
@@ -408,7 +420,7 @@ function showResult(data){
 
   let html = `<div class="verdict l${overall}"><div class="gauge" aria-hidden="true"><i></i><i></i><i></i></div>
     <h2>${LEVEL_NAME[overall]}</h2>
-    <p class="sub">${findings.length ? "写真から確認できた箇所ごとの結果です。" : "写真からは、目立つ劣化は確認できませんでした。気になる変化があれば、またチェックしてみてください。"}</p></div>`;
+    <p class="sub">${findings.length ? "写真から確認できた箇所ごとの結果です。" : "写真からは、目立つ劣化は確認できませんでした。気になる変化があれば、またチェックしてみてください。"}${overall<3 ? "<br><b>今すぐ工事が必要とは限りません。</b>" : ""}</p></div>`;
 
   findings.forEach(f=>{
     const it = ITEMS[f.item];
@@ -445,6 +457,7 @@ function showResult(data){
   }
 
   html += `<p class="disc">※写真での簡易判定です。実際の状態は現地で確認が必要です。この診断は、写真から確認できる範囲での簡易チェックです。写真だけでは、外壁内部・防水層内部・雨漏りの原因・塗膜の密着状態など、確認できない部分があります。気になる場合は、現地での確認をおすすめします。</p>
+    <div class="box"><h3>すでに見積もりを取っている方へ</h3><p style="color:var(--ink)">塗装・防水工事の見積もりをもらって「この金額は適正なの？」と思ったら、こちらで確認できます。</p><a class="btn tel" href="https://iizima61-cloud.github.io/iizima/" target="_blank" rel="noopener">見積もり適正診断を見る</a></div>
     <button class="again" id="again">もう一度診断する</button>`;
 
   res.innerHTML = html;
