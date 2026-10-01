@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>写真診断 利用状況</title>
+<style>
+  body{font-family:system-ui,-apple-system,"Hiragino Sans","Noto Sans JP",sans-serif;margin:0;padding:16px;background:#f4f6f9;color:#1b2a41}
+  h1{font-size:18px;margin:0 0 12px}
+  .box{background:#fff;border-radius:10px;padding:14px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+  input,button{font-size:16px;padding:10px;border-radius:8px;border:1px solid #b8c2d0}
+  button{background:#1b3a6b;color:#fff;border:0;cursor:pointer}
+  .tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+  .tabs button{background:#fff;color:#1b3a6b;border:1px solid #1b3a6b}
+  .tabs button.on{background:#1b3a6b;color:#fff}
+  .wrap{overflow-x:auto}
+  table{border-collapse:collapse;width:100%;min-width:560px;background:#fff}
+  th,td{border:1px solid #d5dbe5;padding:8px;text-align:right;font-size:14px}
+  th:first-child,td:first-child{text-align:left}
+  th{background:#e8edf5}
+  .note{font-size:12px;color:#5a6a82;margin-top:8px}
+  #err{color:#b00020;margin-top:8px}
+</style>
+</head>
+<body>
+<h1>写真診断 利用状況</h1>
+<div class="box" id="login">
+  <input id="key" type="password" placeholder="合言葉" autocomplete="off">
+  <button id="go">表示</button>
+  <div id="err"></div>
+</div>
+<div id="view" style="display:none">
+  <div class="tabs" id="tabs"></div>
+  <div class="wrap"><table id="tbl"></table></div>
+  <p class="note">人数は同じ人の重複を除いた数です。流入元「test」は集計に含みません。</p>
+</div>
+<script>
+const STATS_URL = "https://wglvspoifylzsnzzlrme.supabase.co/functions/v1/shashin-stats";
+const ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndnbHZzcG9pZnlsenNuenpscm1lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY1MTEzMzYsImV4cCI6MjEwMjA4NzMzNn0.28t8CB5po53b1QzlPPsDFN5NSWdh6SwEkWDpikWF4CE";
+const COLS = [["page_view","開いた人数"],["photo_selected","写真を選んだ人数"],["shindan_done","診断した人数"],["line_click","LINEを押した人数"],["mitsumori_click","見積診断へ進んだ人数"]];
+const PERIODS = [["today","今日"],["d7","直近7日"],["d30","直近30日"],["all","全期間"]];
+let data = null, cur = "today";
+const $ = id => document.getElementById(id);
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function render(){
+  $("tabs").innerHTML = PERIODS.map(([k,l])=>`<button data-k="${k}" class="${k===cur?"on":""}">${l}</button>`).join("");
+  document.querySelectorAll("#tabs button").forEach(b=>b.onclick=()=>{cur=b.dataset.k;render();});
+  const rows = data.periods[cur] || {};
+  const names = Object.keys(rows).sort((a,b)=>(rows[b].page_view||0)-(rows[a].page_view||0));
+  let h = "<tr><th>流入元</th>" + COLS.map(c=>`<th>${c[1]}</th>`).join("") + "</tr>";
+  if(!names.length) h += `<tr><td colspan="${COLS.length+1}">まだデータがありません</td></tr>`;
+  names.forEach(n=>{ h += `<tr><td>${esc(n)}</td>` + COLS.map(c=>`<td>${rows[n][c[0]]||0}</td>`).join("") + "</tr>"; });
+  $("tbl").innerHTML = h;
+}
+$("go").onclick = async ()=>{
+  $("err").textContent = "";
+  try{
+    const r = await fetch(STATS_URL + "?key=" + encodeURIComponent($("key").value), {headers:{Authorization:"Bearer "+ANON_KEY, apikey:ANON_KEY}});
+    if(!r.ok) throw 0;
+    data = await r.json();
+    $("login").style.display = "none"; $("view").style.display = "block"; render();
+  }catch(_){ $("err").textContent = "表示できませんでした。合言葉を確認してください。"; }
+};
+$("key").addEventListener("keydown", e=>{ if(e.key==="Enter") $("go").click(); });
+</script>
+</body>
+</html>
