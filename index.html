@@ -198,7 +198,7 @@ footer a{color:var(--brand)}
 </div>
 
 <script>
-const LINE_URL = "https://line.me/R/ti/p/@489tvrhh";
+const LINE_URL = "https://lin.ee/wR2gvs8";
 const TEL = "090-1883-5221";
 // 相談ボタン（LINE・無料点検・電話）が押された回数をGoogle広告の成果として数える（1回の訪問で1件まで）
 let consultTracked = false;
@@ -409,7 +409,7 @@ document.addEventListener("click", e=>{
   const t = e.target.closest && e.target.closest("a, #shareBtn");
   if(!t) return;
   const href = t.getAttribute("href") || "";
-  if(t.id === "shareBtn" || href.indexOf("line.me/R/ti/p/@489tvrhh") !== -1) track("line_click");
+  if(t.id === "shareBtn" || href.indexOf("lin.ee/wR2gvs8") !== -1) track("line_click");
   else if(href.indexOf("iizima61-cloud.github.io/iizima/") !== -1) track("mitsumori_click");
 }, true);
 track("page_view");
