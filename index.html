@@ -198,7 +198,7 @@ footer a{color:var(--brand)}
 </div>
 
 <script>
-const LINE_URL = "https://line.me/R/ti/p/@489tvrhh";
+const LINE_URL = "https://lin.ee/wR2gvs8";
 const TEL = "090-1883-5221";
 // 相談ボタン（LINE・無料点検・電話）が押された回数をGoogle広告の成果として数える（1回の訪問で1件まで）
 let consultTracked = false;
@@ -409,7 +409,7 @@ document.addEventListener("click", e=>{
   const t = e.target.closest && e.target.closest("a, #shareBtn");
   if(!t) return;
   const href = t.getAttribute("href") || "";
-  if(t.id === "shareBtn" || href.indexOf("line.me/R/ti/p/@489tvrhh") !== -1) track("line_click");
+  if(t.id === "shareBtn" || href.indexOf("lin.ee/wR2gvs8") !== -1) track("line_click");
   else if(href.indexOf("iizima61-cloud.github.io/iizima/") !== -1) track("mitsumori_click");
 }, true);
 track("page_view");
@@ -500,7 +500,7 @@ function showResult(data){
   const shareBox = `<div class="share"><p class="small" style="margin-top:14px"><b>診断した写真と結果を、そのままLINEで送れます</b></p>
       <a class="btn tel" href="${LINE_URL}" target="_blank" rel="noopener">① 飯島防水を友だち追加する（初めての方）</a>
       <button type="button" class="btn line" id="shareBtn" style="width:100%;border:0;cursor:pointer;font-family:inherit">② 写真と結果をLINEで送る</button>
-      <p class="small" id="shareNote">②を押して送り先に「LINE」→「飯島防水」を選ぶと、写真と診断結果が届きます。</p></div>`;
+      <p class="small" id="shareNote">初めての方は、先に①で友だち追加してください。友だちになっていないと、送り先に飯島防水が表示されません。②を押して送り先に「LINE」→「飯島防水」を選ぶと、写真と診断結果が届きます。</p></div>`;
   const reply = `<p class="small">職人歴30年以上の代表が直接確認します。現場作業中は返信が遅れる場合がありますが、通常、当日〜翌日中に返信します。</p>`;
   if(overall === 2){
     html += `<div class="exit"><h3>写真を送って専門家に相談できます</h3>
