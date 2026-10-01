@@ -461,6 +461,10 @@ goBtn.addEventListener("click", async ()=>{
       invalid_json:"うまく判定できませんでした。もう一度「診断する」を押してください。"
     }[e && e.code] || "うまく診断できませんでした。時間をおいて、もう一度お試しください。";
     statusEl.innerHTML = `<span class="err">${esc(msg)}</span>`;
+    if(e && e.code === "limit"){
+      statusEl.innerHTML += `<a class="btn main" href="${LINE_URL}" target="_blank" rel="noopener">LINEで写真を送って相談する</a>
+        <a class="btn tel" href="tel:${TEL.replace(/-/g,"")}">電話で相談する ${TEL}</a>`;
+    }
   }finally{
     updateGo();
   }
