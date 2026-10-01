@@ -340,6 +340,7 @@ async function addPhoto(i, f){
     const dark = await isDark(url);
     if(files[i]) URL.revokeObjectURL(files[i].url);
     files[i] = {file, url};
+    track("photo_selected");
     statusEl.textContent = dark ? "写真が少し暗いようです。明るい場所でもう一度撮影すると、より確認しやすくなります（このままでも診断できます）。" : "";
     renderSlots(); updateGo();
   }catch(_){
@@ -353,6 +354,65 @@ renderSlots();
 
 const RELAY_URL = "https://wglvspoifylzsnzzlrme.supabase.co/functions/v1/shashin-shindan";
 const ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndnbHZzcG9pZnlsenNuenpscm1lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY1MTEzMzYsImV4cCI6MjEwMjA4NzMzNn0.28t8CB5po53b1QzlPPsDFN5NSWdh6SwEkWDpikWF4CE";
+
+// ===== 利用回数の計測（個人情報・写真は送らない。種類・流入元・ランダムIDだけ記録） =====
+const LOG_URL = "https://wglvspoifylzsnzzlrme.supabase.co/functions/v1/shashin-log";
+const CONV_SHINDAN_DONE = ''; // 後で飯島が設定（例：AW-18391141487/xxxx）
+const CONV_LINE_CLICK   = ''; // 後で飯島が設定（例：AW-18391141487/xxxx）
+const tracked = {};
+function ss(k, v){
+  try{ if(v === undefined) return sessionStorage.getItem(k); sessionStorage.setItem(k, v); }catch(_){}
+  return null;
+}
+function detectSource(){
+  const cached = ss("shashin_src"); if(cached) return cached;
+  let src = "direct";
+  try{
+    const q = new URLSearchParams(location.search);
+    const from = (q.get("from") || "").trim();
+    if(/^[A-Za-z0-9_-]{1,40}$/.test(from)) src = from;
+    else if(q.get("gclid") || q.get("gbraid") || q.get("wbraid")) src = "google_ads";
+  }catch(_){}
+  ss("shashin_src", src);
+  return src;
+}
+function sessionId(){
+  let id = ss("shashin_sid");
+  if(!id){
+    try{ id = crypto.randomUUID(); }
+    catch(_){ id = "s" + Date.now().toString(36) + Math.random().toString(36).slice(2, 12); }
+    ss("shashin_sid", id);
+  }
+  return id;
+}
+const SOURCE = detectSource();
+const SID = sessionId();
+function track(event){
+  if(tracked[event] || ss("shashin_ev_" + event)) return; // 1セッション1回まで
+  tracked[event] = true; ss("shashin_ev_" + event, "1");
+  try{
+    fetch(LOG_URL, {
+      method:"POST", keepalive:true,
+      headers:{ "Content-Type":"application/json", "Authorization":"Bearer "+ANON_KEY, "apikey":ANON_KEY },
+      body: JSON.stringify({ event, source: SOURCE, session_id: SID })
+    }).catch(()=>{});
+  }catch(_){}
+  try{
+    if(window.gtag){
+      gtag('event', event, { source: SOURCE });
+      if(event === "shindan_done" && CONV_SHINDAN_DONE) gtag('event','conversion',{send_to: CONV_SHINDAN_DONE});
+      if(event === "line_click" && CONV_LINE_CLICK) gtag('event','conversion',{send_to: CONV_LINE_CLICK});
+    }
+  }catch(_){}
+}
+document.addEventListener("click", e=>{
+  const t = e.target.closest && e.target.closest("a, #shareBtn");
+  if(!t) return;
+  const href = t.getAttribute("href") || "";
+  if(t.id === "shareBtn" || href.indexOf("line.me/R/ti/p/@489tvrhh") !== -1) track("line_click");
+  else if(href.indexOf("iizima61-cloud.github.io/iizima/") !== -1) track("mitsumori_click");
+}, true);
+track("page_view");
 
 // 写真を小さくしてから送る（通信量とAI利用料を抑える）
 function shrink(file){
@@ -462,6 +522,7 @@ function showResult(data){
 
   res.innerHTML = html;
   res.style.display = "block"; res.classList.add("show");
+  track("shindan_done");
   const sb = document.getElementById("shareBtn");
   if(sb){
     const lines = ["【写真でわかる外壁・防水診断の結果】", "全体：" + LEVEL_NAME[overall]];
