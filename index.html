@@ -151,6 +151,16 @@ footer a{color:var(--brand)}
   <h2><span class="n">2</span>かんたんな質問に答える</h2>
   <p class="hint">わからない場合は「わからない」で大丈夫です。</p>
   <fieldset>
+    <legend>どこが気になりますか？</legend>
+    <div class="opts" data-q="area">
+      <label><input type="radio" name="area" value="外壁・屋根"><span>外壁・屋根</span></label>
+      <label><input type="radio" name="area" value="ベランダ・屋上（防水）"><span>ベランダ・屋上（防水）</span></label>
+      <label><input type="radio" name="area" value="両方"><span>両方</span></label>
+      <label><input type="radio" name="area" value="わからない"><span>わからない</span></label>
+    </div>
+  </fieldset>
+  <div id="paintQs">
+  <fieldset>
     <legend>前回の外壁・屋根の塗装は何年くらい前ですか？</legend>
     <div class="opts" data-q="q1">
       <label><input type="radio" name="q1" value="10年未満"><span>10年未満</span></label>
@@ -177,6 +187,52 @@ footer a{color:var(--brand)}
       <label><input type="radio" name="q3" value="わからない"><span>わからない</span></label>
     </div>
   </fieldset>
+  </div>
+  <div id="waterQs">
+  <fieldset>
+    <legend>前回の防水工事（トップコートの塗り替えを含む）は何年くらい前ですか？</legend>
+    <div class="opts" data-q="w1">
+      <label><input type="radio" name="w1" value="5年未満"><span>5年未満</span></label>
+      <label><input type="radio" name="w1" value="5〜10年"><span>5〜10年</span></label>
+      <label><input type="radio" name="w1" value="10年以上"><span>10年以上</span></label>
+      <label><input type="radio" name="w1" value="したことがない"><span>したことがない</span></label>
+      <label><input type="radio" name="w1" value="わからない"><span>わからない</span></label>
+    </div>
+  </fieldset>
+  <fieldset>
+    <legend>雨のあと、水たまりが半日以上残りますか？</legend>
+    <div class="opts" data-q="w2">
+      <label><input type="radio" name="w2" value="残らない"><span>残らない</span></label>
+      <label><input type="radio" name="w2" value="残る"><span>残る</span></label>
+      <label><input type="radio" name="w2" value="わからない"><span>わからない</span></label>
+    </div>
+  </fieldset>
+  <fieldset>
+    <legend>下の階の天井や壁に、シミや雨漏りの跡はありますか？</legend>
+    <div class="opts" data-q="w3">
+      <label><input type="radio" name="w3" value="ない"><span>ない</span></label>
+      <label><input type="radio" name="w3" value="ある"><span>ある</span></label>
+      <label><input type="radio" name="w3" value="わからない"><span>わからない</span></label>
+    </div>
+  </fieldset>
+  <fieldset>
+    <legend>排水口（ドレン）に、落ち葉やゴミが詰まっていますか？</legend>
+    <div class="opts" data-q="w4">
+      <label><input type="radio" name="w4" value="詰まっていない"><span>詰まっていない</span></label>
+      <label><input type="radio" name="w4" value="少したまっている"><span>少したまっている</span></label>
+      <label><input type="radio" name="w4" value="詰まっている"><span>詰まっている</span></label>
+      <label><input type="radio" name="w4" value="わからない"><span>わからない</span></label>
+    </div>
+  </fieldset>
+  <fieldset>
+    <legend>床を歩くと、フカフカ・ブカブカする所がありますか？</legend>
+    <div class="opts" data-q="w5">
+      <label><input type="radio" name="w5" value="ない"><span>ない</span></label>
+      <label><input type="radio" name="w5" value="ある"><span>ある</span></label>
+      <label><input type="radio" name="w5" value="わからない"><span>わからない</span></label>
+    </div>
+  </fieldset>
+  </div>
   <button class="go" id="go" disabled>🔍 写真をチェックして結果を見る</button>
   <p class="note">写真は判定のためだけに使い、当社では保存しません。</p>
   <div class="status" id="status" role="status" aria-live="polite"></div>
@@ -350,6 +406,26 @@ async function addPhoto(i, f){
 function updateGo(){ goBtn.disabled = !files.some(Boolean); }
 function answer(name){ const c = document.querySelector(`input[name=${name}]:checked`); let v = c ? c.value : "未回答"; if(name==="q1"){ if(v==="塗ったことがない") v="わからない・塗ったことがない"; else if(v==="わからない") v="未回答"; } return v; }
 
+// ===== 「どこが気になりますか？」による質問の出し分け =====
+// 未選択・「両方」・「わからない」はすべて「両方」と同じ扱い（外壁・屋根の3問、防水の5問を両方出す）。
+function rawArea(){ const c = document.querySelector("input[name=area]:checked"); return c ? c.value : "未回答"; }
+function effectiveArea(){ const v = rawArea(); return (v === "外壁・屋根" || v === "ベランダ・屋上（防水）") ? v : "両方"; }
+function isPaintVisible(){ return effectiveArea() !== "ベランダ・屋上（防水）"; }
+function isWaterVisible(){ return effectiveArea() !== "外壁・屋根"; }
+function updateAreaVisibility(){
+  document.getElementById("paintQs").style.display = isPaintVisible() ? "" : "none";
+  document.getElementById("waterQs").style.display = isWaterVisible() ? "" : "none";
+}
+document.querySelectorAll('input[name="area"]').forEach(r=>r.addEventListener("change", updateAreaVisibility));
+updateAreaVisibility();
+// 隠れている質問（表示されていない質問）は、選択済みでも送信せず「未回答」として送る。
+function getAnswer(name, visible){
+  if(!visible) return "未回答";
+  if(name === "q1" || name === "q2" || name === "q3") return answer(name);
+  const c = document.querySelector(`input[name=${name}]:checked`);
+  return c ? c.value : "未回答";
+}
+
 renderSlots();
 
 const RELAY_URL = "https://wglvspoifylzsnzzlrme.supabase.co/functions/v1/shashin-shindan";
@@ -387,14 +463,14 @@ function sessionId(){
 }
 const SOURCE = detectSource();
 const SID = sessionId();
-function track(event){
+function track(event, extra){
   if(tracked[event] || ss("shashin_ev_" + event)) return; // 1セッション1回まで
   tracked[event] = true; ss("shashin_ev_" + event, "1");
   try{
     fetch(LOG_URL, {
       method:"POST", keepalive:true,
       headers:{ "Content-Type":"application/json", "Authorization":"Bearer "+ANON_KEY, "apikey":ANON_KEY },
-      body: JSON.stringify({ event, source: SOURCE, session_id: SID })
+      body: JSON.stringify(Object.assign({ event, source: SOURCE, session_id: SID }, extra || {}))
     }).catch(()=>{});
   }catch(_){}
   try{
@@ -444,14 +520,21 @@ goBtn.addEventListener("click", async ()=>{
     let images;
     try{ images = await Promise.all(picked.map(shrink)); }
     catch(_){ throw {code:"image_rejected"}; }
+    const paintVisible = isPaintVisible(), waterVisible = isWaterVisible();
+    const answers = {
+      area: rawArea(),
+      q1: getAnswer("q1", paintVisible), q2: getAnswer("q2", paintVisible), q3: getAnswer("q3", paintVisible),
+      w1: getAnswer("w1", waterVisible), w2: getAnswer("w2", waterVisible), w3: getAnswer("w3", waterVisible),
+      w4: getAnswer("w4", waterVisible), w5: getAnswer("w5", waterVisible)
+    };
     const res = await fetch(RELAY_URL, {
       method:"POST",
       headers:{ "Content-Type":"application/json", "Authorization":"Bearer "+ANON_KEY, "apikey":ANON_KEY },
-      body: JSON.stringify({ images, q1:answer("q1"), q2:answer("q2"), q3:answer("q3") })
+      body: JSON.stringify(Object.assign({ images }, answers))
     });
     const data = await res.json().catch(()=>({}));
     if(!res.ok) throw {code: data.error || "upstream"};
-    showResult(data);
+    showResult(data, answers);
     statusEl.textContent = "";
   }catch(e){
     const msg = {
@@ -470,7 +553,7 @@ goBtn.addEventListener("click", async ()=>{
   }
 });
 
-function showResult(data){
+function showResult(data, answers){
   const res = document.getElementById("result");
   if(data && data.not_building){
     statusEl.innerHTML = '<span class="err">建物の外壁・屋根・ベランダ・屋上の写真で、もう一度お試しください。</span>';
@@ -480,9 +563,20 @@ function showResult(data){
     .filter(f=>ITEMS[f.item] && [1,2,3].includes(Number(f.level)))
     .map(f=>({item:f.item, type:(["coating","sheet","asphalt"].includes(f.type)?f.type:"coating"), exposed:f.exposed===true, level:Number(f.level), reasons:(Array.isArray(f.reasons)?f.reasons:[]).slice(0,3)}))
     .sort((a,b)=>b.level-a.level);
-  const overall = findings.length ? Math.max(...findings.map(f=>f.level)) : 1;
+  let overall = findings.length ? Math.max(...findings.map(f=>f.level)) : 1;
 
-  let html = `<div class="verdict l${overall}"><div class="gauge" aria-hidden="true"><i></i><i></i><i></i></div>
+  // 「下の階の天井や壁にシミ・雨漏りの跡がある」と回答した場合は、写真の判定に関係なく最も重い判定にする。
+  const forceLeak = !!(answers && answers.w3 === "ある");
+  if(forceLeak) overall = 3;
+  // 防水工事（トップコートの塗り替え含む）をしたことがない・10年以上前という回答で、
+  // 防水層が判定に出た場合は、早めの軽い補修で済む可能性があることを一言添える。
+  const earlyNote = !!(answers && (answers.w1 === "10年以上" || answers.w1 === "したことがない"));
+
+  let html = "";
+  if(forceLeak){
+    html += `<p style="margin:0 0 14px;padding:14px 16px;background:var(--l3-soft);border-radius:10px;color:var(--l3);font-weight:700">下の階にシミや雨漏りの跡があるとのことでした。雨漏りの可能性があります。写真では原因まで判断できないため、早めの点検をおすすめします。</p>`;
+  }
+  html += `<div class="verdict l${overall}"><div class="gauge" aria-hidden="true"><i></i><i></i><i></i></div>
     <h2>${LEVEL_NAME[overall]}</h2>
     <p class="sub">${findings.length ? "写真から確認できた箇所ごとの結果です。" : "写真からは、目立つ劣化は確認できませんでした。気になる変化があれば、またチェックしてみてください。"}${overall<3 ? "<br><b>今すぐ工事が必要とは限りません。</b>" : ""}</p></div>`;
 
@@ -494,6 +588,7 @@ function showResult(data){
     if (f.item === "membrane" && f.exposed) text = "防水層が剥がれ、下地のコンクリートがむき出しになっている箇所があります。この部分は雨水を防げていない状態です。" + text;
     html += `<div class="item l${f.level}"><h3>${esc(name)}<span class="badge">${LEVEL_NAME[f.level]}</span></h3>
       <p>${esc(text)}${it.extra?" "+esc(it.extra):""}</p>
+      ${(f.item === "membrane" && earlyNote) ? `<p style="margin-top:8px;font-size:14px;color:var(--sub)">早めなら、トップコートなどの軽い補修で済むことがあります。</p>` : ""}
       ${f.reasons.length?`<div class="why"><b>今回の判定理由</b><ul>${f.reasons.map(r=>`<li>${esc(r)}</li>`).join("")}</ul></div>`:""}</div>`;
   });
 
@@ -526,7 +621,7 @@ function showResult(data){
 
   res.innerHTML = html;
   res.style.display = "block"; res.classList.add("show");
-  track("shindan_done");
+  track("shindan_done", answers ? { area: answers.area } : undefined);
   const sb = document.getElementById("shareBtn");
   if(sb){
     const lines = ["【写真でわかる外壁・防水診断の結果】", "全体：" + LEVEL_NAME[overall]];
@@ -556,7 +651,7 @@ function showResult(data){
   document.getElementById("again").addEventListener("click", ()=>{
     files.forEach((f,i)=>{ if(f) URL.revokeObjectURL(f.url); files[i]=null; });
     document.querySelectorAll('input[type=radio]').forEach(r=>r.checked=false);
-    renderSlots(); updateGo();
+    renderSlots(); updateGo(); updateAreaVisibility();
     res.style.display = "none"; res.innerHTML = "";
     document.getElementById("form").style.display = "block";
     window.scrollTo({top:0, behavior:"smooth"});
