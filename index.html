@@ -44,12 +44,9 @@ header .lead{margin:0 0 14px;color:var(--ink)}
 .credit{margin:0 0 12px;font-size:14px;font-weight:700;color:var(--brand)}
 .company{font-size:13px;color:var(--sub);margin-top:12px}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-.sample{margin-top:16px;padding-top:12px;border-top:1px dashed var(--line)}
-.sample-title{margin:0;font-size:13px;font-weight:700;color:var(--sub)}
-.sample-title span{font-weight:400}
-.sample .verdict{margin-top:8px;padding:14px}
-.sample .verdict h2{font-size:18px}
-.sample .item{margin-top:8px}
+.sample{margin-top:16px;padding:10px 12px;border:1px dashed var(--line);border-radius:10px;background:var(--surface);color:var(--sub);font-size:13px;line-height:1.7}
+.sample p{margin:4px 0 0}
+.sample-tag{display:inline-block;border:1px solid var(--line);border-radius:4px;padding:0 6px;font-size:12px;line-height:1.5}
 
 section.step{background:var(--surface);border-radius:14px;padding:20px 18px;margin-top:18px;border:1px solid var(--line)}
 .step h2{font-size:19px;margin:0 0 4px;font-weight:700;display:flex;align-items:baseline;gap:10px}
@@ -167,11 +164,11 @@ footer a{color:var(--brand)}
   <h2><span class="n">2</span>写真を撮る・選ぶ</h2>
   <p class="hint">最大4枚。1枚だけでも診断できます。</p>
   <div class="slots" id="slots"></div>
-  <div class="sample" aria-label="結果の例">
-    <p class="sample-title">結果の例 <span>※表示の例です</span></p>
-    <div class="verdict l2"><div class="gauge" aria-hidden="true"><i></i><i></i><i></i></div>
-      <h2>一度、専門家に見てもらうと安心です</h2></div>
-    <div class="item l2"><h3>防水層：塗る防水<span class="badge">一度、専門家に見てもらうと安心です</span></h3><p>色あせが確認されました。</p></div>
+  <div class="sample" aria-label="結果の見本">
+    <span class="sample-tag">見本</span>
+    <p>診断すると、こんな形で結果が出ます</p>
+    <p>結果は3段階：「今のところ心配ありません」／「一度、専門家に見てもらうと安心です」／「早めに専門家へご相談ください」</p>
+    <p>例）防水層：塗る防水 — 色あせが確認されました</p>
   </div>
 </section>
 
