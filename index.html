@@ -583,8 +583,8 @@ goBtn.addEventListener("click", async ()=>{
     });
     const data = await res.json().catch(()=>({}));
     if(!res.ok) throw {code: data.error || "upstream"};
-    showResult(data, answers);
-    statusEl.textContent = "";
+    // 「建物の写真ではない」判定のときは案内文を残す（消すと何も出ないように見える）
+    if(showResult(data, answers) !== false) statusEl.textContent = "";
   }catch(e){
     const msg = {
       limit:"本日の診断回数の上限に達しました。明日またお試しください。お急ぎの方はLINEで写真を送ってご相談ください。",
@@ -605,8 +605,9 @@ goBtn.addEventListener("click", async ()=>{
 function showResult(data, answers){
   const res = document.getElementById("result");
   if(data && data.not_building){
-    statusEl.innerHTML = '<span class="err">建物の外壁・屋根・ベランダ・屋上の写真で、もう一度お試しください。</span>';
-    return;
+    statusEl.innerHTML = '<span class="err">写真から建物の外壁・屋根・ベランダ・屋上を確認できませんでした。建物が写るように撮って、もう一度お試しください。</span>'
+      + `<a class="btn line" href="${LINE_URL}" target="_blank" rel="noopener">うまくいかない場合は、LINEで写真を送って相談する</a>`;
+    return false;
   }
   const findings = (Array.isArray(data && data.findings) ? data.findings : [])
     .filter(f=>ITEMS[f.item] && [1,2,3].includes(Number(f.level)))
