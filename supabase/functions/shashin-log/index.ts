@@ -1,7 +1,9 @@
 // 写真診断アプリの利用イベントを1行記録する。個人情報・写真・IP・端末情報は保存しない。
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-const EVENTS = ["page_view", "photo_selected", "shindan_done", "line_click", "mitsumori_click"];
+const EVENTS = ["page_view", "photo_selected", "shindan_done", "line_click", "mitsumori_click",
+  // 2026-11 追加：どこでやめたかを知るための記録
+  "line_top_click", "self_check_click", "form_seen", "area_selected", "question_answered", "slot_tap", "go_click"];
 // shindan_done のときだけ、画面の「どこが気になりますか？」の回答(area)も任意で記録する。
 const AREA_VALUES = ["外壁・屋根", "ベランダ・屋上（防水）", "両方", "わからない", "未回答"];
 const cors = {

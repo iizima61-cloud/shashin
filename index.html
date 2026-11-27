@@ -120,6 +120,13 @@ legend{font-weight:700;margin-bottom:8px;padding:0}
 .btn.line{background:var(--line-green);color:#fff}
 .btn.main{background:var(--brand);color:var(--brand-ink)}
 .btn.tel{background:var(--bg);color:var(--ink);border:1px solid var(--line)}
+.entry{margin-top:18px;padding:16px;background:var(--surface);border:1px solid var(--line);border-radius:14px}
+.entry .btn{margin-top:0;font-size:18px;padding:16px 14px;line-height:1.45}
+.entry .btn .s{display:block;font-size:14px;font-weight:500;margin-top:2px}
+.entry .self{display:block;width:100%;margin-top:12px;border:2px solid var(--brand);background:var(--surface);color:var(--brand);font-family:inherit;font-size:17px;font-weight:700;border-radius:12px;padding:14px;cursor:pointer}
+.entry .self .s{display:block;font-size:14px;font-weight:500;color:var(--ink);margin-top:2px}
+.entry .self:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+.entry .or{margin:10px 0 0;font-size:15px;color:var(--ink);text-align:center}
 .small{font-size:13px;color:var(--sub);margin:10px 0 0}
 .calm{background:var(--surface);border-radius:14px;padding:18px;margin-top:18px;border:1px solid var(--line)}
 .calm p{margin:0}
@@ -141,6 +148,11 @@ footer a{color:var(--brand)}
   <ul class="promise">
     <li>無料</li><li>連絡先の入力なし</li><li>営業電話なし</li><li>写真は保存しません</li>
   </ul>
+  <div class="entry" id="entry">
+    <a class="btn line" id="topLine" href="https://lin.ee/wR2gvs8" target="_blank" rel="noopener">📷 写真をLINEで送って<br>職人に直接見てもらう<span class="s">雨漏り・お急ぎの方はこちら<br>代表が直接見ます</span></a>
+    <p class="or">または</p>
+    <button type="button" class="self" id="selfCheck">自分でチェックする（約1分）<span class="s">写真と質問で、今の状態の目安がわかります</span></button>
+  </div>
   <p style="margin:12px 0 4px;font-size:14px;font-weight:700">チェックできる場所 <span style="font-weight:400;color:var(--sub)">（気になる場所だけでOK）</span></p>
   <p style="margin:0;font-size:15px">外壁・シーリング・屋根・ベランダ・屋上の防水</p>
   <div class="company">飯島防水株式会社（長野市）</div>
@@ -280,7 +292,7 @@ function trackConsult(){
   try{ if(window.gtag) gtag('event','conversion',{send_to:'AW-18391141487/5rusCOLWuI0dEO-YysFE', value:1.0, currency:'JPY'}); }catch(_){}
 }
 document.addEventListener("click", e=>{
-  const t = e.target.closest && e.target.closest("#result a.btn, #shareBtn");
+  const t = e.target.closest && e.target.closest("#result a.btn, #shareBtn, #topLine");
   if(t) trackConsult();
 }, true);
 
@@ -508,10 +520,24 @@ document.addEventListener("click", e=>{
   const t = e.target.closest && e.target.closest("a, #shareBtn");
   if(!t) return;
   const href = t.getAttribute("href") || "";
+  if(t.id === "topLine") track("line_top_click");
   if(t.id === "shareBtn" || href.indexOf("lin.ee/wR2gvs8") !== -1) track("line_click");
   else if(href.indexOf("iizima61-cloud.github.io/iizima/") !== -1) track("mitsumori_click");
 }, true);
 track("page_view");
+// どこでやめたかを知るための記録（1回の訪問で各1回まで。個人情報・回答内容は送らない）
+document.getElementById("selfCheck").addEventListener("click", ()=>{
+  track("self_check_click");
+  document.getElementById("form").scrollIntoView({behavior:"smooth", block:"start"});
+});
+try{
+  const io = new IntersectionObserver(es=>{ if(es.some(x=>x.isIntersecting)){ track("form_seen"); io.disconnect(); } }, {threshold:0.3});
+  io.observe(document.querySelector("#form .step"));
+}catch(_){}
+document.querySelectorAll('input[name="area"]').forEach(r=>r.addEventListener("change", ()=>track("area_selected")));
+document.querySelectorAll('#paintQs input[type=radio], #waterQs input[type=radio]').forEach(r=>r.addEventListener("change", ()=>track("question_answered")));
+document.getElementById("slots").addEventListener("click", e=>{ if(e.target.closest && e.target.closest(".slot input[type=file]")) track("slot_tap"); }, true);
+goBtn.addEventListener("click", ()=>track("go_click"), true);
 
 // 写真を小さくしてから送る（通信量とAI利用料を抑える）
 function shrink(file){
