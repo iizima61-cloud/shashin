@@ -605,8 +605,9 @@ goBtn.addEventListener("click", async ()=>{
 function showResult(data, answers){
   const res = document.getElementById("result");
   if(data && data.not_building){
-    statusEl.innerHTML = '<span class="err">写真から建物の外壁・屋根・ベランダ・屋上を確認できませんでした。建物が写るように撮って、もう一度お試しください。</span>'
-      + `<a class="btn line" href="${LINE_URL}" target="_blank" rel="noopener">うまくいかない場合は、LINEで写真を送って相談する</a>`;
+    statusEl.innerHTML = '<span class="err">この写真診断は、外壁・屋根・ベランダ・屋上など<b>建物の外まわり</b>用です。外まわりの写真で、もう一度お試しください。</span>'
+      + `<p style="margin:10px 0 0;font-size:15px;color:var(--ink)">お風呂・洗面所のコーキングなど、室内の気になる所は、LINEで写真を送っていただければ確認します。</p>`
+      + `<a class="btn line" href="${LINE_URL}" target="_blank" rel="noopener">LINEで写真を送って相談する</a>`;
     return false;
   }
   const findings = (Array.isArray(data && data.findings) ? data.findings : [])
