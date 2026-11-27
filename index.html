@@ -12,7 +12,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#EDF1F3; --surface:#FFFFFF; --ink:#1C2830; --sub:#56646E; --line:#CFD8DD;
+  --bg:#EDF1F3; --surface:#FFFFFF; --ink:#1C2830; --sub:#4B5563; --line:#CFD8DD;
   --brand:#24617F; --brand-ink:#FFFFFF; --brand-soft:#DCEAF1;
   --l1:#2F7550; --l1-soft:#E0F0E6; --l2:#A86A12; --l2-soft:#F8EBD3; --l3:#A8352A; --l3-soft:#F6DEDA;
   --line-green:#06C755;
@@ -120,6 +120,15 @@ legend{font-weight:700;margin-bottom:8px;padding:0}
 .btn.line{background:var(--line-green);color:#fff}
 .btn.main{background:var(--brand);color:var(--brand-ink)}
 .btn.tel{background:var(--bg);color:var(--ink);border:1px solid var(--line)}
+.safety{margin:0 0 14px;padding:12px 14px;background:#fff7ed;border:2px solid #fdba74;border-radius:10px;color:#9a3412;font-size:15px;line-height:1.7}
+.safety b{color:#9a3412}
+.safety p{margin:4px 0 0}
+.roofwarn{margin:0 0 12px;color:#b91c1c;font-weight:700;font-size:15px}
+.okbadge{display:inline-block;margin:0 0 10px;padding:6px 12px;border-radius:10px;background:var(--brand);color:var(--brand-ink);font-weight:700;font-size:15px}
+.nophoto{margin:0 0 14px;font-size:15px;font-weight:700;color:var(--ink)}
+.local{margin-top:14px;padding:14px 16px;background:var(--surface);border:1px solid var(--line);border-left:6px solid var(--brand);border-radius:10px;font-size:15px}
+.copynote{margin:10px 0 0;padding:10px 12px;background:var(--l1-soft);border-radius:8px;font-size:15px;font-weight:700;color:var(--ink)}
+.company a{color:inherit}
 .entry{margin-top:18px;padding:16px;background:var(--surface);border:1px solid var(--line);border-radius:14px}
 .entry .btn{margin-top:0;font-size:18px;padding:16px 14px;line-height:1.45}
 .entry .btn .s{display:block;font-size:14px;font-weight:500;margin-top:2px}
@@ -144,6 +153,7 @@ footer a{color:var(--brand)}
 <header>
   <h1>写真でわかる<br>外壁・防水診断</h1>
   <p class="lead">外壁・屋根から、ベランダ・屋上の防水まで。気になる所をスマホで撮るだけで、防水専門店の目線で今の状態の目安がわかります。写真から分かる範囲での簡易チェックです。</p>
+  <p style="margin:-6px 0 14px;font-size:15px;color:var(--ink)">※地上から安全に撮れる範囲だけで大丈夫です（高い場所・屋根などは無理に撮らないでください）。</p>
   <p class="credit">職人歴30年以上の防水職人が監修</p>
   <ul class="promise">
     <li>無料</li><li>連絡先の入力なし</li><li>営業電話なし</li><li>写真は保存しません</li>
@@ -155,7 +165,7 @@ footer a{color:var(--brand)}
   </div>
   <p style="margin:12px 0 4px;font-size:14px;font-weight:700">チェックできる場所 <span style="font-weight:400;color:var(--sub)">（気になる場所だけでOK）</span></p>
   <p style="margin:0;font-size:15px">外壁・シーリング・屋根・ベランダ・屋上の防水</p>
-  <div class="company">飯島防水株式会社（長野市）</div>
+  <div class="company"><a href="https://iizimabousui.com/" target="_blank" rel="noopener">飯島防水株式会社（長野市）</a></div>
 </header>
 
 <div id="form">
@@ -174,7 +184,11 @@ footer a{color:var(--brand)}
 
 <section class="step">
   <h2><span class="n">2</span>写真を撮る・選ぶ</h2>
-  <p class="hint">最大4枚。1枚だけでも診断できます。</p>
+  <div class="safety" role="note"><b>⚠️ 安全のためのお願い（無理な撮影はしないでください）</b>
+    <p>屋根や2階の外壁など、<b>高い場所や危険な場所の写真は無理に撮らないでください。</b>脚立に登ったり身を乗り出したりすると大変危険です。</p>
+    <p><b>地上からスマホのズームで撮れる範囲、または「写真なし（下の質問に答えるだけ）」でも診断できます。</b></p></div>
+  <p class="roofwarn" id="roofWarn" style="display:none">※屋根や2階部分は危険ですので、地上から見える範囲だけ撮影するか、写真はスキップして質問にお答えください。</p>
+  <p class="hint">最大4枚。1枚だけでも診断できます。<br><b style="color:var(--ink)">※今すぐ写真が撮れない場合は、写真を入れずに下の質問に答えるだけでも診断できます。</b></p>
   <div class="slots" id="slots"></div>
   <div class="sample" aria-label="結果の見本">
     <span class="sample-tag">見本</span>
@@ -186,6 +200,7 @@ footer a{color:var(--brand)}
 
 <section class="step">
   <h2><span class="n">3</span>かんたんな質問に答える</h2>
+  <p class="okbadge">答えられる質問だけでOK・飛ばしても診断できます</p>
   <p class="hint" id="qHint">「どこが気になりますか？」を選ぶと、質問が出ます。選ばなくても診断できます。</p>
   <p class="hint" id="qHint2">わからない場合は「わからない」で大丈夫です。</p>
   <div id="paintQs">
@@ -262,7 +277,8 @@ footer a{color:var(--brand)}
     </div>
   </fieldset>
   </div>
-  <button class="go" id="go" disabled>🔍 写真をチェックして結果を見る</button>
+  <button class="go" id="go" disabled>🔍 診断結果を見る</button>
+  <p class="note" style="color:var(--ink)">写真を1枚以上入れるか、質問に1つ以上答えると押せます。</p>
   <p class="note">写真は判定のためだけに使い、当社では保存しません。</p>
   <div class="status" id="status" role="status" aria-live="polite"></div>
 </section>
@@ -297,7 +313,7 @@ document.addEventListener("click", e=>{
 }, true);
 
 const SLOT_LABELS = [
-  {t:"建物の全体", s:"どの面か分かるように", req:true},
+  {t:"建物の全体", s:"どの面か分かるように"},
   {t:"気になる所のアップ", s:"ひび・剥がれなど"},
   {t:"気になる所を少し離れて", s:"場所と範囲が分かるように"},
   {t:"ほかに気になる所", s:"あれば"}
@@ -357,6 +373,47 @@ const ITEMS = {
     3:"つなぎ目のすき間や剥がれ、防水層の立ち上がり部分のめくれが見られます。雨漏りの入口になりやすい場所です。早めに専門家へご相談ください。"}}
 };
 
+// 写真なしのとき、回答だけで出す項目
+ITEMS.paint_age = {name:"外壁・屋根の塗装（ご回答から）", t:{
+  1:"前回の塗装から10年未満とのことで、時期としては今のところ心配ありません。",
+  2:"前回の塗装から年数がたっている、または雨の後に外壁が水を弾かないとのご回答でした。塗装が外壁を守る力が弱まり始める時期です。一度、専門家に見てもらうと安心です。",
+  3:"前回の塗装から年数がたっている、または雨の後に外壁が水を弾かないとのご回答でした。塗装が外壁を守る力が弱まり始める時期です。一度、専門家に見てもらうと安心です。"}};
+ITEMS.water_age = {name:"ベランダ・屋上の防水（ご回答から）", t:{
+  1:"前回の防水工事から5年未満とのことで、時期としては今のところ心配ありません。",
+  2:"前回の防水工事から年数がたっているとのご回答でした。表面の保護塗装（トップコート）の塗り替え時期の目安です。早めなら軽い補修で済むことが多い段階です。一度、専門家に見てもらうと安心です。",
+  3:"前回の防水工事から年数がたっているとのご回答でした。表面の保護塗装（トップコート）の塗り替え時期の目安です。早めなら軽い補修で済むことが多い段階です。一度、専門家に見てもらうと安心です。"}};
+function rawVal(name){ const c = document.querySelector(`input[name=${name}]:checked`); return c ? c.value : ""; }
+function anyAnswered(){ return ["q1","q2","q3","w1","w2","w3","w4","w5"].some(n=>{ const v = rawVal(n); return v && v !== "わからない"; }); }
+// 写真なし：回答だけで目安を出す（AIは使わない）
+function judgeFromAnswers(){
+  const pv = isPaintVisible(), wv = isWaterVisible();
+  const v = n => ((n[0]==="q" ? pv : wv) ? rawVal(n) : "");
+  const out = [];
+  const pr = []; let pl = 0;
+  if(v("q1") === "10年未満"){ pl = Math.max(pl,1); pr.push("前回の塗装は10年未満とのご回答でした"); }
+  if(["10〜15年","15年以上","塗ったことがない"].includes(v("q1"))){ pl = 2; pr.push("前回の塗装は「" + v("q1") + "」とのご回答でした"); }
+  if(v("q3") === "弾かない・しみ込んでいる"){ pl = 2; pr.push("雨の後、外壁が水を弾かないとのご回答でした"); }
+  if(pl) out.push({item:"paint_age", level:pl, reasons:pr});
+  if(v("q2") === "少し付く") out.push({item:"chalking", level:1, reasons:["外壁を指でこすると白い粉が少し付くとのご回答でした"]});
+  if(v("q2") === "はっきり付く") out.push({item:"chalking", level:2, reasons:["外壁を指でこすると白い粉がはっきり付くとのご回答でした"]});
+  if(v("w1") === "5年未満") out.push({item:"water_age", level:1, reasons:["前回の防水工事は5年未満とのご回答でした"]});
+  if(["5〜10年","10年以上","したことがない"].includes(v("w1"))) out.push({item:"water_age", level:2, reasons:["前回の防水工事は「" + v("w1") + "」とのご回答でした"]});
+  const dr = []; let dl = 0;
+  if(v("w2") === "残る"){ dl = Math.max(dl,2); dr.push("雨の後、水たまりが半日以上残るとのご回答でした"); }
+  if(v("w4") === "少したまっている"){ dl = Math.max(dl,2); dr.push("排水口にゴミがたまっているとのご回答でした"); }
+  if(v("w4") === "詰まっている"){ dl = 3; dr.push("排水口が詰まっているとのご回答でした"); }
+  if(dl) out.push({item:"drain", level:dl, reasons:dr});
+  if(v("w5") === "ある") out.push({item:"membrane", type:"coating", level:3, reasons:["歩くとフカフカする所があるとのご回答でした"]});
+  return {not_building:false, findings:out};
+}
+function collectAnswers(){
+  const pv = isPaintVisible(), wv = isWaterVisible();
+  return { area: rawArea(),
+    q1: getAnswer("q1", pv), q2: getAnswer("q2", pv), q3: getAnswer("q3", pv),
+    w1: getAnswer("w1", wv), w2: getAnswer("w2", wv), w3: getAnswer("w3", wv),
+    w4: getAnswer("w4", wv), w5: getAnswer("w5", wv) };
+}
+
 const files = [null,null,null,null];
 const slotsEl = document.getElementById("slots");
 const goBtn = document.getElementById("go");
@@ -369,7 +426,7 @@ function renderSlots(){
   slotsEl.innerHTML = "";
   SLOT_LABELS.forEach((d0,i)=>{
     // 「ベランダ・屋上（防水）」を選んだときだけ、1枚目の枠の案内を変える
-    const d = (i === 0 && rawArea() === "ベランダ・屋上（防水）") ? {t:"ベランダ・屋上の全体", s:"床全体と排水口が入るように", req:true} : d0;
+    const d = (i === 0 && rawArea() === "ベランダ・屋上（防水）") ? {t:"ベランダ・屋上の全体", s:"床全体と排水口が入るように"} : d0;
     const el = document.createElement("label");
     el.className = "slot" + (files[i] ? " has" : "");
     let html = "";
@@ -434,7 +491,8 @@ async function addPhoto(i, f){
     statusEl.innerHTML = '<span class="err">この写真は読み込めませんでした。JPEG（.jpg）やPNGの写真でお試しください。</span>';
   }
 }
-function updateGo(){ goBtn.disabled = !files.some(Boolean); }
+function updateGo(){ goBtn.disabled = !(files.some(Boolean) || anyAnswered()); }
+document.querySelectorAll("#paintQs input[type=radio], #waterQs input[type=radio], input[name=area]").forEach(r=>r.addEventListener("change", ()=>updateGo()));
 function answer(name){ const c = document.querySelector(`input[name=${name}]:checked`); let v = c ? c.value : "未回答"; if(name==="q1"){ if(v==="塗ったことがない") v="わからない・塗ったことがない"; else if(v==="わからない") v="未回答"; } return v; }
 
 // ===== 「どこが気になりますか？」による質問の出し分け =====
@@ -451,7 +509,7 @@ function updateAreaVisibility(){
   document.getElementById("qHint").style.display = picked ? "none" : "";
   document.getElementById("qHint2").style.display = picked ? "" : "none";
 }
-document.querySelectorAll('input[name="area"]').forEach(r=>r.addEventListener("change", ()=>{ updateAreaVisibility(); renderSlots(); }));
+document.querySelectorAll('input[name="area"]').forEach(r=>r.addEventListener("change", ()=>{ updateAreaVisibility(); renderSlots(); const a = rawArea(); document.getElementById("roofWarn").style.display = (a === "外壁・屋根" || a === "両方") ? "" : "none"; }));
 updateAreaVisibility();
 // 隠れている質問（表示されていない質問）は、選択済みでも送信せず「未回答」として送る。
 function getAnswer(name, visible){
@@ -562,7 +620,12 @@ function shrink(file){
 
 goBtn.addEventListener("click", async ()=>{
   const picked = files.filter(Boolean).map(f=>f.file).slice(0,4);
-  if(!picked.length) return;
+  if(!picked.length){
+    // 写真なし：質問の回答だけで目安を出す
+    if(!anyAnswered()) return;
+    if(showResult(judgeFromAnswers(), collectAnswers(), true) !== false) statusEl.textContent = "";
+    return;
+  }
   goBtn.disabled = true;
   statusEl.textContent = "写真を確認しています…（20〜40秒ほどかかります）";
   try{
@@ -602,7 +665,7 @@ goBtn.addEventListener("click", async ()=>{
   }
 });
 
-function showResult(data, answers){
+function showResult(data, answers, noPhoto){
   const res = document.getElementById("result");
   if(data && data.not_building){
     statusEl.innerHTML = '<span class="err">この写真診断は、外壁・屋根・ベランダ・屋上など<b>建物の外まわり</b>用です。外まわりの写真で、もう一度お試しください。</span>'
@@ -629,7 +692,9 @@ function showResult(data, answers){
   }
   html += `<div class="verdict l${overall}"><div class="gauge" aria-hidden="true"><i></i><i></i><i></i></div>
     <h2>${LEVEL_NAME[overall]}</h2>
-    <p class="sub">${findings.length ? "写真から確認できた箇所ごとの結果です。" : "写真からは、目立つ劣化は確認できませんでした。気になる変化があれば、またチェックしてみてください。"}${overall<3 ? "<br><b>今すぐ工事が必要とは限りません。</b>" : ""}</p></div>`;
+    <p class="sub">${noPhoto ? (findings.length ? "ご回答から分かる範囲の目安です。" : "ご回答からは、急ぎの心配は見つかりませんでした。") : (findings.length ? "写真から確認できた箇所ごとの結果です。" : "写真からは、目立つ劣化は確認できませんでした。気になる変化があれば、またチェックしてみてください。")}${overall<3 ? "<br><b>今すぐ工事が必要とは限りません。</b>" : ""}</p></div>
+    <div class="local">写真だけでは見えにくい下地の傷みや雨漏りの原因も、<b>長野市・千曲市周辺であれば代表の飯島が無料で現地確認いたします（しつこい営業はしません）。</b></div>`;
+  if(noPhoto) html = `<p class="nophoto">📝 写真なし・ご回答だけからの目安です。地上から安全に撮れる写真があれば、追加するとより詳しく確認できます。</p>` + html;
 
   findings.forEach(f=>{
     const it = ITEMS[f.item];
@@ -647,10 +712,9 @@ function showResult(data, answers){
     <ul><li>外壁内部の水分・腐食</li><li>防水層内部の状態</li><li>雨漏りの原因</li><li>シーリング内部の劣化</li><li>塗膜の密着状態</li><li>下地の傷み</li></ul>
     <p>必要に応じて、現地での確認が必要です。</p></div>`;
 
-  const shareBox = `<div class="share"><p class="small" style="margin-top:14px"><b>診断した写真と結果を、そのままLINEで送れます</b></p>
-      <a class="btn tel" href="${LINE_URL}" target="_blank" rel="noopener">① 飯島防水を友だち追加する（初めての方）</a>
-      <button type="button" class="btn line" id="shareBtn" style="width:100%;border:0;cursor:pointer;font-family:inherit">② 写真と結果をLINEで送る</button>
-      <p class="small" id="shareNote">初めての方は、先に①で友だち追加してください。友だちになっていないと、送り先に飯島防水が表示されません。②を押して送り先に「LINE」→「飯島防水」を選ぶと、写真と診断結果が届きます。</p></div>`;
+  const shareBox = `<div class="share"><a class="btn line" id="copyLine" href="${LINE_URL}" target="_blank" rel="noopener">この診断結果をLINEで社長に送る（無料）</a>
+      <p class="small" style="color:var(--ink)">押すと診断結果が自動でコピーされ、LINEが開きます。トーク画面に貼り付けて送ってください。</p>
+      <p class="copynote" id="copyNote" style="display:none">診断結果をコピーしました。LINEのトーク画面に貼り付けて、写真があれば一緒に送ってください。</p></div>`;
   const reply = `<p class="small">職人歴30年以上の代表が直接確認します。現場作業中は返信が遅れる場合がありますが、通常、当日〜翌日中に返信します。</p>`;
   if(overall === 2){
     html += `<div class="exit"><h3>写真を送って専門家に相談できます</h3>
@@ -659,11 +723,10 @@ function showResult(data, answers){
   }else if(overall === 3){
     html += `<div class="exit"><h3>無料点検を承っています</h3>
       <p>点検だけでもOK。その場で契約を迫ることはありません。</p>
-      <a class="btn main" href="${LINE_URL}" target="_blank" rel="noopener">無料点検を依頼する（LINE）</a>
-      <a class="btn tel" href="tel:${TEL.replace(/-/g,"")}">電話で依頼する ${TEL}</a>
-      <p class="small">まずは写真を見てほしい、という相談もLINEで受け付けています。</p>${shareBox}${reply}</div>`;
+      ${shareBox}
+      <a class="btn tel" href="tel:${TEL.replace(/-/g,"")}">電話で依頼する ${TEL}</a>${reply}</div>`;
   }else{
-    html += `<div class="calm"><p>今のところ、急いで何かをする必要はありません。</p><p style="margin-top:8px">今は大丈夫でも、外壁や防水は、気づかないうちに少しずつ傷みます。困る前に、定期的にチェックしておくと安心です。季節の変わり目や大雨の後など、気になった時に、また写真で試してみてください。</p></div>`;
+    html += `<div class="calm"><p>今のところ、急いで何かをする必要はありません。</p><p style="margin-top:8px">今は大丈夫でも、外壁や防水は、気づかないうちに少しずつ傷みます。困る前に、定期的にチェックしておくと安心です。季節の変わり目や大雨の後など、気になった時に、また写真で試してみてください。</p>${shareBox}</div>`;
   }
 
   html += `<p class="disc">※写真での簡易判定です。実際の状態は現地で確認が必要です。この診断は、写真から確認できる範囲での簡易チェックです。写真だけでは、外壁内部・防水層内部・雨漏りの原因・塗膜の密着状態など、確認できない部分があります。気になる場合は、現地での確認をおすすめします。</p>
@@ -673,28 +736,25 @@ function showResult(data, answers){
   res.innerHTML = html;
   res.style.display = "block"; res.classList.add("show");
   track("shindan_done", answers ? { area: answers.area } : undefined);
-  const sb = document.getElementById("shareBtn");
-  if(sb){
-    const lines = ["【写真でわかる外壁・防水診断の結果】", "全体：" + LEVEL_NAME[overall]];
+  const cl = document.getElementById("copyLine");
+  if(cl){
+    const Q = [["area","気になる場所"],["q1","前回の塗装"],["q2","外壁をこすると白い粉"],["q3","雨の後、外壁は水を"],["w1","前回の防水工事"],["w2","雨の後の水たまり"],["w3","下の階のシミ・雨漏りの跡"],["w4","排水口の詰まり"],["w5","床のフカフカ"]];
+    const lines = ["【写真でわかる外壁・防水診断の結果】", "全体：" + LEVEL_NAME[overall], "写真：" + (noPhoto ? "なし（回答のみ）" : files.filter(Boolean).length + "枚")];
     findings.forEach(f=>{
       const it = ITEMS[f.item]; const ty = it.types ? it.types[f.type] : null;
       lines.push("・" + (ty ? "防水層：" + ty.label : it.name) + "：" + LEVEL_NAME[f.level] + (f.reasons.length ? "（" + f.reasons.join("／") + "）" : ""));
     });
-    lines.push("この写真について相談したいです。");
+    if(forceLeak) lines.push("・下の階にシミや雨漏りの跡あり");
+    const qa = Q.filter(([k])=>answers && answers[k] && answers[k] !== "未回答").map(([k,l])=>"・" + l + "：" + answers[k]);
+    if(qa.length){ lines.push("【回答】"); lines.push(...qa); }
+    lines.push("この結果について相談したいです。");
     const msg = lines.join("\n");
-    sb.addEventListener("click", async ()=>{
-      const shareFiles = files.filter(Boolean).map(f=>f.file);
-      const note = document.getElementById("shareNote");
-      try{
-        if(navigator.canShare && navigator.canShare({files: shareFiles})){
-          await navigator.share({files: shareFiles, text: msg});
-          return;
-        }
-      }catch(e){ if(e && e.name === "AbortError") return; }
-      // 写真ごと共有できない環境（主にパソコン）：結果の文章をコピーしてLINEを開く
-      try{ await navigator.clipboard.writeText(msg); }catch(_){}
-      note.textContent = "この端末では写真をまとめて送れないため、診断結果の文章をコピーしました。開いたLINEのトークに貼り付け、写真は「＋」から添付してください。";
-      window.open(LINE_URL, "_blank");
+    cl.addEventListener("click", ()=>{
+      // 押した時点でコピー（LINEはそのまま新しい画面で開く）
+      let ok = false;
+      try{ if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(msg).catch(()=>{}); ok = true; } }catch(_){}
+      if(!ok){ try{ const t = document.createElement("textarea"); t.value = msg; t.setAttribute("readonly",""); t.style.position="fixed"; t.style.opacity="0"; document.body.appendChild(t); t.select(); document.execCommand("copy"); t.remove(); }catch(_){} }
+      document.getElementById("copyNote").style.display = "block";
     });
   }
   document.getElementById("form").style.display = "none";
@@ -702,7 +762,7 @@ function showResult(data, answers){
   document.getElementById("again").addEventListener("click", ()=>{
     files.forEach((f,i)=>{ if(f) URL.revokeObjectURL(f.url); files[i]=null; });
     document.querySelectorAll('input[type=radio]').forEach(r=>r.checked=false);
-    renderSlots(); updateGo(); updateAreaVisibility();
+    renderSlots(); updateGo(); updateAreaVisibility(); document.getElementById("roofWarn").style.display = "none";
     res.style.display = "none"; res.innerHTML = "";
     document.getElementById("form").style.display = "block";
     window.scrollTo({top:0, behavior:"smooth"});
