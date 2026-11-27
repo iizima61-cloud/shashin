@@ -38,7 +38,7 @@
 <script>
 const STATS_URL = "https://wglvspoifylzsnzzlrme.supabase.co/functions/v1/shashin-stats";
 const ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndnbHZzcG9pZnlsenNuenpscm1lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY1MTEzMzYsImV4cCI6MjEwMjA4NzMzNn0.28t8CB5po53b1QzlPPsDFN5NSWdh6SwEkWDpikWF4CE";
-const COLS = [["page_view","開いた人数"],["photo_selected","写真を選んだ人数"],["shindan_done","診断した人数"],["line_click","LINEを押した人数"],["mitsumori_click","見積診断へ進んだ人数"]];
+const COLS = [["page_view","開いた人数"],["line_top_click","最初の画面でLINEを押した"],["self_check_click","「自分でチェック」を押した"],["form_seen","質問の画面まで見た"],["area_selected","場所を選んだ"],["question_answered","質問に答えた"],["slot_tap","写真の枠を押した"],["photo_selected","写真を選んだ人数"],["go_click","診断ボタンを押した"],["shindan_done","診断した人数"],["line_click","LINEを押した人数（合計）"],["mitsumori_click","見積診断へ進んだ人数"]];
 const PERIODS = [["today","今日"],["d7","直近7日"],["d30","直近30日"],["all","全期間"]];
 let data = null, cur = "today";
 const $ = id => document.getElementById(id);
