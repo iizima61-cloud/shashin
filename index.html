@@ -40,46 +40,47 @@ img{max-width:100%}
 header h1{font-size:30px;line-height:1.3;font-weight:900;margin:0 0 10px;letter-spacing:.02em}
 header .lead{margin:0 0 14px;color:var(--ink)}
 .promise{display:flex;flex-wrap:wrap;gap:6px;margin:0;padding:0;list-style:none}
-.promise li{font-size:13px;background:var(--brand-soft);color:var(--ink);border-radius:999px;padding:3px 12px}
+.promise li{font-size:14px;background:var(--brand-soft);color:var(--ink);border-radius:999px;padding:3px 12px}
 .credit{margin:0 0 12px;font-size:14px;font-weight:700;color:var(--brand)}
-.company{font-size:13px;color:var(--sub);margin-top:12px}
+.company{font-size:14px;color:var(--sub);margin-top:12px}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-.sample{margin-top:16px;padding:10px 12px;border:1px dashed var(--line);border-radius:10px;background:var(--surface);color:var(--sub);font-size:13px;line-height:1.7}
+.sample{margin-top:16px;padding:10px 12px;border:1px dashed var(--line);border-radius:10px;background:var(--surface);color:var(--sub);font-size:14px;line-height:1.7}
 .sample p{margin:4px 0 0}
 .sample-tag{display:inline-block;border:1px solid var(--line);border-radius:4px;padding:0 6px;font-size:12px;line-height:1.5}
 
 section.step{background:var(--surface);border-radius:14px;padding:20px 18px;margin-top:18px;border:1px solid var(--line)}
 .step h2{font-size:19px;margin:0 0 4px;font-weight:700;display:flex;align-items:baseline;gap:10px}
 .step h2 .n{font-size:14px;color:var(--brand);font-weight:900}
-.step .hint{font-size:14px;color:var(--sub);margin:0 0 14px}
+.step .hint{font-size:15px;color:var(--sub);margin:0 0 14px}
 
 .slots{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.slot{position:relative;display:flex;flex-direction:column;justify-content:flex-end;min-height:128px;border:2px dashed var(--line);border-radius:10px;padding:10px;cursor:pointer;background:var(--bg);overflow:hidden}
+.slot{position:relative;display:flex;flex-direction:column;justify-content:flex-end;gap:8px;min-height:150px;border:2px dashed var(--line);border-radius:10px;padding:10px;cursor:pointer;background:var(--bg);overflow:hidden}
 .slot:focus-within{outline:3px solid var(--brand);outline-offset:2px}
 .slot input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
-.slot .lab{position:relative;font-size:13px;font-weight:700;line-height:1.4;z-index:1}
+.slot .lab{position:relative;font-size:14px;font-weight:700;line-height:1.4;z-index:1}
 .slot .req{font-size:11px;color:var(--brand);font-weight:700}
-.slot .plus{position:absolute;top:10px;left:10px;font-size:24px;line-height:1;color:var(--brand)}
+.slot .plus{position:static;display:block;margin:0 0 auto;padding:8px 6px;border-radius:8px;background:var(--brand);color:var(--brand-ink);font-size:15px;font-weight:700;line-height:1.35;text-align:center}
+.slot .plus small{display:block;font-size:12px;font-weight:500}
 .slot.has{border-style:solid;border-color:var(--brand)}
 .slot.has img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .slot.has .lab{background:rgba(0,0,0,.6);color:#fff;border-radius:6px;padding:2px 6px;align-self:flex-start}
 .slot.has .plus{display:none}
-.slot .rm{position:absolute;top:6px;right:6px;z-index:2;border:0;border-radius:999px;background:rgba(0,0,0,.65);color:#fff;font-size:12px;padding:2px 10px;cursor:pointer;font-family:inherit}
+.slot .rm{position:absolute;top:6px;right:6px;z-index:2;min-width:64px;min-height:40px;border:2px solid #fff;border-radius:999px;background:rgba(0,0,0,.75);color:#fff;font-size:15px;font-weight:700;padding:6px 14px;cursor:pointer;font-family:inherit}
 
 fieldset{border:0;margin:0 0 18px;padding:0}
 fieldset:last-child{margin-bottom:0}
 legend{font-weight:700;margin-bottom:8px;padding:0}
-.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opts{display:flex;flex-wrap:wrap;gap:10px}
 .opts label{position:relative}
 .opts input{position:absolute;opacity:0}
-.opts span{display:block;border:1px solid var(--line);border-radius:8px;padding:8px 14px;font-size:15px;cursor:pointer;background:var(--bg)}
+.opts span{display:flex;align-items:center;min-height:48px;border:1px solid var(--line);border-radius:8px;padding:8px 16px;font-size:16px;cursor:pointer;background:var(--bg)}
 .opts input:checked + span{background:var(--brand);color:var(--brand-ink);border-color:var(--brand);font-weight:700}
 .opts input:focus-visible + span{outline:3px solid var(--brand);outline-offset:2px}
 
-.go{display:block;width:100%;margin-top:22px;border:0;border-radius:12px;background:var(--brand);color:var(--brand-ink);font-family:inherit;font-size:18px;font-weight:700;padding:16px;cursor:pointer}
+.go{display:block;width:100%;min-height:56px;margin-top:22px;border:0;border-radius:12px;background:var(--brand);color:var(--brand-ink);font-family:inherit;font-size:18px;font-weight:700;padding:16px;cursor:pointer}
 .go:disabled{opacity:.45;cursor:not-allowed}
 .go:focus-visible,.btn:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
-.note{font-size:13px;color:var(--sub);margin:10px 0 0;text-align:center}
+.note{font-size:15px;color:var(--sub);margin:10px 0 0;text-align:center}
 .status{margin-top:14px;text-align:center;font-size:15px;color:var(--sub);min-height:1.5em}
 .err{color:var(--l3);font-weight:700}
 
@@ -94,7 +95,7 @@ legend{font-weight:700;margin-bottom:8px;padding:0}
 .l3 .gauge i{background:var(--l3);opacity:1}
 .verdict h2{font-size:24px;line-height:1.4;margin:0;font-weight:900}
 .l1 h2{color:var(--l1)} .l2 h2{color:var(--l2)} .l3 h2{color:var(--l3)}
-.verdict .sub{margin:6px 0 0;font-size:14px;color:var(--ink)}
+.verdict .sub{margin:6px 0 0;font-size:15px;color:var(--ink)}
 
 .item{background:var(--surface);border:1px solid var(--line);border-left-width:6px;border-radius:10px;padding:16px;margin-top:12px}
 .item.l1{border-left-color:var(--l1)} .item.l2{border-left-color:var(--l2)} .item.l3{border-left-color:var(--l3)}
@@ -104,14 +105,14 @@ legend{font-weight:700;margin-bottom:8px;padding:0}
 [data-theme="dark"] .badge{color:#10181C}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .badge{color:#10181C}}
 .item p{margin:0}
-.why{margin-top:10px;padding:10px 12px;background:var(--bg);border-radius:8px;font-size:14px}
-.why b{display:block;font-size:13px;color:var(--sub);margin-bottom:2px}
+.why{margin-top:10px;padding:10px 12px;background:var(--bg);border-radius:8px;font-size:15px}
+.why b{display:block;font-size:14px;color:var(--sub);margin-bottom:2px}
 .why ul{margin:0;padding-left:1.2em}
 
 .box{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-top:18px}
 .box h3{margin:0 0 6px;font-size:16px}
 .box ul{margin:0;padding-left:1.2em;font-size:15px}
-.box p{margin:6px 0 0;font-size:14px;color:var(--sub)}
+.box p{margin:6px 0 0;font-size:15px;color:var(--sub)}
 
 .exit{background:var(--surface);border:2px solid var(--brand);border-radius:14px;padding:20px 18px;margin-top:18px}
 .exit h3{margin:0 0 8px;font-size:18px}
@@ -127,6 +128,9 @@ legend{font-weight:700;margin-bottom:8px;padding:0}
 .okbadge{display:inline-block;margin:0 0 10px;padding:6px 12px;border-radius:10px;background:var(--brand);color:var(--brand-ink);font-weight:700;font-size:15px}
 .nophoto{margin:0 0 14px;font-size:15px;font-weight:700;color:var(--ink)}
 .local{margin-top:14px;padding:14px 16px;background:var(--surface);border:1px solid var(--line);border-left:6px solid var(--brand);border-radius:10px;font-size:15px}
+.topcontact{margin-top:14px}
+.topcontact .btn{margin-top:0}
+.topcontact .btn.tel{margin-top:12px}
 .copynote{margin:10px 0 0;padding:10px 12px;background:var(--l1-soft);border-radius:8px;font-size:15px;font-weight:700;color:var(--ink)}
 .company a{color:inherit}
 .entry{margin-top:18px;padding:16px;background:var(--surface);border:1px solid var(--line);border-radius:14px}
@@ -136,13 +140,13 @@ legend{font-weight:700;margin-bottom:8px;padding:0}
 .entry .self .s{display:block;font-size:14px;font-weight:500;color:var(--ink);margin-top:2px}
 .entry .self:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
 .entry .or{margin:10px 0 0;font-size:15px;color:var(--ink);text-align:center}
-.small{font-size:13px;color:var(--sub);margin:10px 0 0}
+.small{font-size:14px;color:var(--sub);margin:10px 0 0}
 .calm{background:var(--surface);border-radius:14px;padding:18px;margin-top:18px;border:1px solid var(--line)}
 .calm p{margin:0}
 
-.disc{font-size:13px;color:var(--sub);margin-top:18px;line-height:1.7}
+.disc{font-size:14px;color:var(--sub);margin-top:18px;line-height:1.7}
 .again{display:block;width:100%;margin-top:18px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:12px;padding:12px;font-family:inherit;font-size:16px;cursor:pointer}
-footer{margin-top:36px;padding-top:16px;border-top:1px solid var(--line);font-size:13px;color:var(--sub)}
+footer{margin-top:36px;padding-top:16px;border-top:1px solid var(--line);font-size:14px;color:var(--sub)}
 footer a{color:var(--brand)}
 @media (prefers-reduced-motion: no-preference){ #result.show .verdict{animation:rise .45s ease-out} @keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}} }
 </style>
@@ -277,6 +281,7 @@ footer a{color:var(--brand)}
     </div>
   </fieldset>
   </div>
+  <p class="hint" style="margin:18px 0 0;color:var(--ink)">※質問の答えが分からない・入力が難しい場合は、そのまま<a href="https://lin.ee/wR2gvs8" target="_blank" rel="noopener" style="color:var(--brand);font-weight:700">LINEで写真を送る</a>か、お電話（<a href="tel:09018835221" style="color:var(--brand);font-weight:700">090-1883-5221</a>）でも大丈夫です。</p>
   <button class="go" id="go" disabled>🔍 診断結果を見る</button>
   <p class="note" style="color:var(--ink)">写真を1枚以上入れるか、質問に1つ以上答えると押せます。</p>
   <p class="note">写真は判定のためだけに使い、当社では保存しません。</p>
@@ -288,7 +293,7 @@ footer a{color:var(--brand)}
 
 <footer>
   <p>他社から見積もりを取った方は、金額や内容が適正かを確認できる<a href="https://iizima61-cloud.github.io/iizima/" target="_blank" rel="noopener">見積もり適正診断</a>もご利用いただけます。</p>
-  <details style="font-size:12px;margin:8px 0"><summary style="cursor:pointer">個人情報・写真の取り扱い</summary>
+  <details style="font-size:14px;margin:8px 0"><summary style="cursor:pointer">個人情報・写真の取り扱い</summary>
   <p>・アップロードされた写真と質問への回答は、劣化の目安を判定するためだけにAI（Google）へ送信し、当社では保存しません。</p>
   <p>・お名前・電話番号・住所などの入力は求めません。</p>
   <p>・広告の効果測定のため、Googleのタグ（Cookie）を使用しています。写真や診断内容はこのタグでは送信しません。</p>
@@ -431,7 +436,7 @@ function renderSlots(){
     el.className = "slot" + (files[i] ? " has" : "");
     let html = "";
     if(files[i]) html += `<img alt="" src="${files[i].url}"><button type="button" class="rm" data-i="${i}">削除</button>`;
-    else html += `<input type="file" accept="image/*" data-i="${i}" aria-label="${esc(d.t)}の写真を選ぶ"><span class="plus" aria-hidden="true">＋</span>`;
+    else html += `<input type="file" accept="image/*" data-i="${i}" aria-label="${esc(d.t)}の写真を選ぶ"><span class="plus" aria-hidden="true">📷 ここを押して<br>写真を選ぶ<small>カメラで撮ってもOK</small></span>`;
     html += `<span class="lab">${esc(d.t)}${d.req?' <span class="req">必須</span>':''}<br><span style="font-weight:400">${esc(d.s)}</span></span>`;
     el.innerHTML = html;
     slotsEl.appendChild(el);
@@ -693,7 +698,7 @@ function showResult(data, answers, noPhoto){
   html += `<div class="verdict l${overall}"><div class="gauge" aria-hidden="true"><i></i><i></i><i></i></div>
     <h2>${LEVEL_NAME[overall]}</h2>
     <p class="sub">${noPhoto ? (findings.length ? "ご回答から分かる範囲の目安です。" : "ご回答からは、急ぎの心配は見つかりませんでした。") : (findings.length ? "写真から確認できた箇所ごとの結果です。" : "写真からは、目立つ劣化は確認できませんでした。気になる変化があれば、またチェックしてみてください。")}${overall<3 ? "<br><b>今すぐ工事が必要とは限りません。</b>" : ""}</p></div>
-    <div class="local">写真だけでは見えにくい下地の傷みや雨漏りの原因も、<b>長野市・千曲市周辺であれば代表の飯島が無料で現地確認いたします（しつこい営業はしません）。</b></div>`;
+    <div class="local">写真だけでは見えにくい下地の傷みや雨漏りの原因も、<b>長野市・千曲市周辺であれば代表の飯島が無料で現地確認いたします（しつこい営業はしません）。</b></div><!--TOPCONTACT-->`;
   if(noPhoto) html = `<p class="nophoto">📝 写真なし・ご回答だけからの目安です。地上から安全に撮れる写真があれば、追加するとより詳しく確認できます。</p>` + html;
 
   findings.forEach(f=>{
@@ -712,9 +717,12 @@ function showResult(data, answers, noPhoto){
     <ul><li>外壁内部の水分・腐食</li><li>防水層内部の状態</li><li>雨漏りの原因</li><li>シーリング内部の劣化</li><li>塗膜の密着状態</li><li>下地の傷み</li></ul>
     <p>必要に応じて、現地での確認が必要です。</p></div>`;
 
-  const shareBox = `<div class="share"><a class="btn line" id="copyLine" href="${LINE_URL}" target="_blank" rel="noopener">この診断結果をLINEで社長に送る（無料）</a>
+  const shareBox = `<div class="share"><a class="btn line copyLine" href="${LINE_URL}" target="_blank" rel="noopener">💬 診断結果をLINEで<br>社長に送る（無料）</a>
       <p class="small" style="color:var(--ink)">押すと診断結果が自動でコピーされ、LINEが開きます。トーク画面に貼り付けて送ってください。</p>
-      <p class="copynote" id="copyNote" style="display:none">診断結果をコピーしました。LINEのトーク画面に貼り付けて、写真があれば一緒に送ってください。</p></div>`;
+      <p class="copynote" style="display:none">診断結果をコピーしました。LINEのトーク画面に貼り付けて、写真があれば一緒に送ってください。</p>
+      <a class="btn tel" href="tel:${TEL.replace(/-/g,"")}">📞 電話でそのまま聞く<br>${TEL}</a>
+      <p class="small">お急ぎの方はお電話で。現場作業中で出られない時は、折り返しご連絡します。</p></div>`;
+  html = html.replace("<!--TOPCONTACT-->", `<div class="topcontact">${shareBox}</div>`);
   const reply = `<p class="small">職人歴30年以上の代表が直接確認します。現場作業中は返信が遅れる場合がありますが、通常、当日〜翌日中に返信します。</p>`;
   if(overall === 2){
     html += `<div class="exit"><h3>写真を送って専門家に相談できます</h3>
@@ -723,8 +731,7 @@ function showResult(data, answers, noPhoto){
   }else if(overall === 3){
     html += `<div class="exit"><h3>無料点検を承っています</h3>
       <p>点検だけでもOK。その場で契約を迫ることはありません。</p>
-      ${shareBox}
-      <a class="btn tel" href="tel:${TEL.replace(/-/g,"")}">電話で依頼する ${TEL}</a>${reply}</div>`;
+      ${shareBox}${reply}</div>`;
   }else{
     html += `<div class="calm"><p>今のところ、急いで何かをする必要はありません。</p><p style="margin-top:8px">今は大丈夫でも、外壁や防水は、気づかないうちに少しずつ傷みます。困る前に、定期的にチェックしておくと安心です。季節の変わり目や大雨の後など、気になった時に、また写真で試してみてください。</p>${shareBox}</div>`;
   }
@@ -736,8 +743,8 @@ function showResult(data, answers, noPhoto){
   res.innerHTML = html;
   res.style.display = "block"; res.classList.add("show");
   track("shindan_done", answers ? { area: answers.area } : undefined);
-  const cl = document.getElementById("copyLine");
-  if(cl){
+  const cls = document.querySelectorAll(".copyLine");
+  if(cls.length){
     const Q = [["area","気になる場所"],["q1","前回の塗装"],["q2","外壁をこすると白い粉"],["q3","雨の後、外壁は水を"],["w1","前回の防水工事"],["w2","雨の後の水たまり"],["w3","下の階のシミ・雨漏りの跡"],["w4","排水口の詰まり"],["w5","床のフカフカ"]];
     const lines = ["【写真でわかる外壁・防水診断の結果】", "全体：" + LEVEL_NAME[overall], "写真：" + (noPhoto ? "なし（回答のみ）" : files.filter(Boolean).length + "枚")];
     findings.forEach(f=>{
@@ -749,16 +756,16 @@ function showResult(data, answers, noPhoto){
     if(qa.length){ lines.push("【回答】"); lines.push(...qa); }
     lines.push("この結果について相談したいです。");
     const msg = lines.join("\n");
-    cl.addEventListener("click", ()=>{
+    cls.forEach(cl=>cl.addEventListener("click", ()=>{
       // 押した時点でコピー（LINEはそのまま新しい画面で開く）
       let ok = false;
       try{ if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(msg).catch(()=>{}); ok = true; } }catch(_){}
       if(!ok){ try{ const t = document.createElement("textarea"); t.value = msg; t.setAttribute("readonly",""); t.style.position="fixed"; t.style.opacity="0"; document.body.appendChild(t); t.select(); document.execCommand("copy"); t.remove(); }catch(_){} }
-      document.getElementById("copyNote").style.display = "block";
-    });
+      document.querySelectorAll(".copynote").forEach(n=>n.style.display = "block");
+    }));
   }
   document.getElementById("form").style.display = "none";
-  window.scrollTo({top:0, behavior:"smooth"});
+  res.scrollIntoView({behavior:"smooth", block:"start"});
   document.getElementById("again").addEventListener("click", ()=>{
     files.forEach((f,i)=>{ if(f) URL.revokeObjectURL(f.url); files[i]=null; });
     document.querySelectorAll('input[type=radio]').forEach(r=>r.checked=false);
